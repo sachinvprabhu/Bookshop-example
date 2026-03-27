@@ -1,0 +1,20 @@
+GET http://localhost:4004/service/bookshopService/Books?$filter=stock gt 25&$expand=author
+
+
+###
+
+GET http://localhost:4004/service/bookshopService/Authors?$expand=books
+
+
+###
+POST http://localhost:4004/service/bookshopService/Books
+Content-Type: application/json
+
+{
+    "Description": "Big book Description",
+    "Price": 5,
+    "stock": 25,
+    "title": "Super Book",
+    "author_ID": "c2385129-d472-46ed-9be7-05e999202af5"
+}
+
