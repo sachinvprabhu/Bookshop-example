@@ -18,3 +18,14 @@ Content-Type: application/json
     "author_ID": "c2385129-d472-46ed-9be7-05e999202af5"
 }
 
+### Get Stock Function
+GET http://localhost:4004/service/bookshopService/Books(ID='b9405714-4184-4090-b8b8-1e4a267c8249',IsActiveEntity=true)/getStock
+
+### Add Stock from Ation
+POST http://localhost:4004/service/bookshopService/Books(ID='b9405714-4184-4090-b8b8-1e4a267c8249',IsActiveEntity=true)/addStock
+Content-Type: application/json
+
+{
+    "quantity":3
+}
+

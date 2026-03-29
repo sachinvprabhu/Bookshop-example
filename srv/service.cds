@@ -4,7 +4,10 @@ using { bookshop as my } from '../db/schema.cds';
 service bookshopService
 {
     
-    entity Books as projection on my.Books;
+    entity Books as projection on my.Books actions{
+        function getStock() returns Integer;
+        action addStock(quantity : Integer) returns Books;
+    };
     entity Authors as projection on my.Authors;
 }
 

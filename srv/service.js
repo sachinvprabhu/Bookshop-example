@@ -1,4 +1,20 @@
 module.exports = function(){
+    this.on("getStock","Books",function(){
+        return 100;
+    });
+
+    this.on("addStock","Books",async function(req){
+        let book = await SELECT.one.from("Books").where({ID:req.params[0].ID});
+        if(!book){
+            req.error("Book not found");
+            return;
+        }
+        console.log("Updating quanitity for ", book);
+        book.stock += req.data.quantity;
+        await UPDATE("Books").set({stock:book.stock}).where({ID:req.params[0].ID});
+        return book;
+    });
+
     this.before("CREATE","Books",function(req){
         if(req.data.stock < 100){
             req.notify("Low Stock");
