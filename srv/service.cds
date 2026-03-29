@@ -56,3 +56,13 @@ annotate bookshopService with @requires :
 [
     'authenticated-user'
 ];
+
+annotate bookshopService.Authors with @(restrict:[
+    { grant: '*', to: 'Manager_Role'}
+]);
+
+annotate bookshopService.Books with @(restrict:[
+    { grant: '*', to: 'Manager_Role'},
+    { grant: 'WRITE', to: 'Employee_Role'},
+    { grant: 'READ', where: (createdBy = $user) }
+]);

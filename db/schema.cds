@@ -11,6 +11,7 @@ entity Authors
 entity Books
 {
     key ID : UUID;
+    createdBy  : String      @cds.on.insert : $user;
     Description : String(100);
     Price : Integer;
     stock : Integer;

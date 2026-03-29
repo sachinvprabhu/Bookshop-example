@@ -30,7 +30,19 @@
           "url": "db.sqlite"
         }
       },
-      "auth": "dummy",
+      "auth": {
+        "strategy":"mock",
+        "users": {
+          "manager@company.com": {
+            "password": "strong-password",
+            "roles": [ "Manager_Role"]
+          },
+          "employee@company.com": {
+            "password": "strong-password",
+            "roles": [ "Employee_Role"]
+          }
+        }
+      },
       "connectivity": true,
       "destinations": true,
       "html5-repo": true,

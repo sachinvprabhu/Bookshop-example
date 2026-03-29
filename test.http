@@ -1,13 +1,15 @@
+### Read Books Table
 GET http://localhost:4004/service/bookshopService/Books?$filter=stock gt 25&$expand=author
-
+Authorization: Basic employee@company.com:strong-password
 
 ###
 
 GET http://localhost:4004/service/bookshopService/Authors?$expand=books
-
+Authorization: Basic manager@company.com:strong-password
 
 ###
 POST http://localhost:4004/service/bookshopService/Books
+Authorization: Basic employee@company.com:strong-password
 Content-Type: application/json
 
 {
@@ -15,17 +17,24 @@ Content-Type: application/json
     "Price": 5,
     "stock": 25,
     "title": "Super Book",
-    "author_ID": "c2385129-d472-46ed-9be7-05e999202af5"
+    "author_ID": "c2385129-d472-46ed-9be7-05e999202af5",
+    "IsActiveEntity":true
 }
 
 ### Get Stock Function
 GET http://localhost:4004/service/bookshopService/Books(ID='b9405714-4184-4090-b8b8-1e4a267c8249',IsActiveEntity=true)/getStock
+Authorization: Basic employee@company.com:strong-password
 
 ### Add Stock from Ation
 POST http://localhost:4004/service/bookshopService/Books(ID='b9405714-4184-4090-b8b8-1e4a267c8249',IsActiveEntity=true)/addStock
+Authorization: Basic manager@company.com:strong-password
 Content-Type: application/json
 
 {
     "quantity":3
 }
 
+
+###
+GET http://localhost:4004/service/bookshopService/Books
+Authorization: Basic employee@company.com:strong-password
