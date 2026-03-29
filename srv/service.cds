@@ -1,8 +1,10 @@
 using { bookshop as my } from '../db/schema.cds';
+using { northwind as external } from './external/northwind';
 
 @path : '/service/bookshopService'
 service bookshopService
 {
+    entity Customers as projection on external.Customers;
     
     entity Books as projection on my.Books actions{
         function getStock() returns Integer;

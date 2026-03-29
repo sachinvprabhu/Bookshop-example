@@ -1,4 +1,11 @@
-module.exports = function(){
+const cds = require("@sap/cds");
+module.exports = async function(){
+    const northwind = await cds.connect.to('northwind');
+
+    this.on('READ', 'Customers', req => {
+        return northwind.run(req.query);
+    });
+
     this.on("getStock","Books",function(){
         return 100;
     });
