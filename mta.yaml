@@ -1,96 +1,164 @@
 _schema-version: 3.3.0
 ID: bookshop
+description: A simple CAP project.
 version: 1.0.0
-description: "A simple CAP project."
+modules:
+- name: bookshop-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: bookshop-auth
+  - name: bookshop-db
+  - name: bookshop-connectivity
+  - name: bookshop-destination
+  - name: bookshop-logging
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    instances: 1
+  build-parameters:
+    builder: npm-ci
+- name: bookshop-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: bookshop-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: bookshop-app-deployer
+  type: com.sap.application.content
+  path: gen
+  requires:
+  - name: bookshop-html5-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: app/
+    requires:
+    - artifacts:
+      - bookshopbookshopui.zip
+      name: bookshopbookshopui
+      target-path: app/
+    - artifacts:
+      - bookshopmanageauthors.zip
+      name: bookshopmanageauthors
+      target-path: app/
+
+- name: bookshop-destination-content
+  type: com.sap.application.content
+  requires:
+    - name: bookshop-auth
+      parameters:
+        service-key:
+          name: bookshop-auth-key
+    - name: bookshop-html5-repo-host
+      parameters:
+        service-key:
+          name: bookshop-html5-repo-host-key
+    - name: srv-api
+    - name: bookshop-destination
+      parameters:
+        content-target: true
+  parameters:
+    content:
+      instance:
+        destinations:
+          - Authentication: OAuth2UserTokenExchange
+            Name: srv-api
+            TokenServiceInstanceName: bookshop-auth
+            TokenServiceKeyName: bookshop-auth-key
+            URL: ~{srv-api/srv-url}
+          - Name: bookshop-html5-repo-host
+            ServiceInstanceName: bookshop-html5-repo-host
+            ServiceKeyName: bookshop-html5-repo-host-key
+            sap.cloud.service: bookshop
+          - Authentication: OAuth2UserTokenExchange
+            Name: bookshop-auth
+            ServiceInstanceName: bookshop-auth
+            ServiceKeyName: bookshop-auth-key
+        existing_destinations_policy: update
+  build-parameters:
+    no-source: true
+- name: bookshopbookshopui
+  type: html5
+  path: app/bookshop-ui
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+  
+- name: bookshopmanageauthors
+  type: html5
+  path: app/manage-authors
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: bookshop-auth
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      oauth2-configuration:
+        credential-types:
+        - binding-secret
+        - x509
+      tenant-mode: dedicated
+      xsappname: bookshop-${org}-${space}
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+- name: bookshop-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: bookshop-connectivity
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: connectivity
+    service-plan: lite
+- name: bookshop-destination
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+    service: destination
+    service-plan: lite
+- name: bookshop-html5-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-host
+- name: bookshop-logging
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: application-logs
+    service-plan: lite
 parameters:
-  enable-parallel-deployments: true
   deploy_mode: html5-repo
+  enable-parallel-deployments: true
 build-parameters:
   before-all:
-    - builder: custom
-      commands:
-        - npm ci
-        - npx cds build --production
-modules:
-  - name: bookshop-srv
-    type: nodejs
-    path: gen/srv
-    parameters:
-      instances: 1
-      buildpack: nodejs_buildpack
-    build-parameters:
-      builder: npm-ci
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: bookshop-auth
-      - name: bookshop-db
-      - name: bookshop-connectivity
-      - name: bookshop-destination
-      - name: bookshop-logging
-
-  - name: bookshop-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: bookshop-db
-
-  - name: bookshop-app-deployer
-    type: com.sap.application.content
-    path: gen
-    requires:
-      - name: bookshop-auth
-      - name: srv-api
-      - name: bookshop-html5-repo-host
-        parameters:
-          content-target: true
-          config:
-            HTML5Runtime_enabled: true
-    build-parameters:
-      build-result: app/
-      requires:
-
-resources:
-  - name: bookshop-auth
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      config:
-        xsappname: bookshop-${org}-${space}
-        tenant-mode: dedicated
-        oauth2-configuration:
-          credential-types:
-            - "binding-secret"
-            - "x509"
-  - name: bookshop-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
-  - name: bookshop-connectivity
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: connectivity
-      service-plan: lite
-  - name: bookshop-destination
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: destination
-      service-plan: lite
-
-  - name: bookshop-html5-repo-host
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: html5-apps-repo
-      service-plan: app-host
-  - name: bookshop-logging
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: application-logs
-      service-plan: lite
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production
