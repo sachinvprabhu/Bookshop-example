@@ -1,0 +1,31 @@
+<mvc:View controllerName="bookshop.customersgeo.controller.RootView"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:geo="sap.ui.geomap"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}" showHeader="true">
+        <geo:Geomap id="map"
+            width="100%"
+            height="90%"
+            items="{/Customers}"
+            centerLat="49.19224998218536"
+            centerLng="9.209693384445245"
+            zoom="12.47447780">
+            <geo:mapControls>
+                <!-- MAP PROVIDER - defines where the map is fetched from -->
+                <geo:GeomapProvider id="mapProvider" styleUrl="https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Streets?type=style&amp;token="></geo:GeomapProvider>
+                <!-- Show the navigation controls -->
+                <geo:GeomapNavigationControl></geo:GeomapNavigationControl>
+                <!-- Show the scale controls at bottom left-->
+                <geo:GeomapScaleControl position="BottomLeft"></geo:GeomapScaleControl>
+                <geo:GeomapCopyrightControl position="BottomRight">
+                        <Text class="copyright" text="Map data from "/>
+                        <Link class="sapUiTinyMarginBegin" target="_blank" text="OpenStreetMap" href="https://www.openstreetmap.org/copyright"/>
+                </geo:GeomapCopyrightControl>
+            </geo:mapControls>
+            <geo:items>
+                <!-- Add a spot to one of the most beautiful places in the world -->
+                <geo:GeomapSpot lat="{geocode_lat}" lng="{geocode_long}" color="black" click=".spotClick"></geo:GeomapSpot>
+            </geo:items>
+        </geo:Geomap>
+    </Page>
+</mvc:View>

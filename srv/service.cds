@@ -4,7 +4,14 @@ using { northwind as external } from './external/northwind';
 @path : '/service/bookshopService'
 service bookshopService
 {
-    entity Customers as projection on external.Customers;
+    entity Customers as
+        select from external.Customers as cus LEFT JOIN my.CityGeoCodes as city on cus.City = city.city and cus.Country = city.country
+        {
+            *,
+            key cus.CustomerID
+        };
+
+    
     
     entity Books as projection on my.Books actions{
         function getStock() returns Integer;

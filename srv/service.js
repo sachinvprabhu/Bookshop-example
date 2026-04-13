@@ -1,9 +1,18 @@
 const cds = require("@sap/cds");
+const { SELECT } = require("@sap/cds/lib/ql/cds-ql");
 module.exports = async function(){
     const northwind = await cds.connect.to('northwind');
 
     this.on('READ', 'Customers', req => {
-        return northwind.run(req.query);
+        return Promise.all([northwind.run(SELECT.from("Customers")),SELECT.from("bookshop.CityGeoCodes")])
+            .then(([customers,geoCodes])=>{
+                return customers.map(customer=>{
+                    let geoCode = geoCodes.find((entry)=>entry.city === customer.City && entry.country === customer.Country )
+                    customer.geocode_lat = geoCode.geocode_lat;
+                    customer.geocode_long = geoCode.geocode_long;
+                    return customer;
+                })
+            });
     });
 
     this.on("getStock","Books",function(){

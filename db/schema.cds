@@ -18,3 +18,15 @@ entity Books
     title : String(100);
     author : Association to one Authors;
 }
+
+
+entity CityGeoCodes {
+    city : String(128);
+    country : String(128);
+    geocode : LatLong;
+}
+
+type LatLong{
+    lat : Decimal(11, 8);
+    long : Decimal(11, 8);
+}

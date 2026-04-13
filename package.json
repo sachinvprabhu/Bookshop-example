@@ -24,7 +24,8 @@
     "undeploy": "cf undeploy bookshop --delete-services --delete-service-keys --delete-service-brokers",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
     "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
-    "watch-manage-authors": "cds watch --open bookshop.manageauthors/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-manage-authors": "cds watch --open bookshop.manageauthors/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-customers-geo": "cds watch --open bookshop.customersgeo/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "cds": {
