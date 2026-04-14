@@ -92,6 +92,9 @@
           "earlyRequests": true
         }
       },
+      "json":{
+        "type": "sap.ui.model.json.JSONModel"
+      },
       "@i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "uri": "i18n/i18n.properties"
@@ -121,7 +124,7 @@
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "contextPath": "/Books", 
+              "contextPath": "/Books",
               "initialLoad": "Enabled",
               "variantManagement": "Page",
               "navigation": {
@@ -148,7 +151,21 @@
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Books"
+              "contextPath": "/Books",
+              "content": {
+                "body": {
+                  "sections": {
+                    "BookReviews": {
+                      "template": "bookshop.bookshopui.ext.fragment.BookReviews",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "AuthorInformation"
+                      },
+                      "title": "Book Reviews"
+                    }
+                  }
+                }
+              }
             }
           }
         }

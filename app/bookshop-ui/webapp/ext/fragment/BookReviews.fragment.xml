@@ -1,0 +1,21 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros">
+	<VBox id="VBox" core:require="{ handler: 'bookshop/bookshopui/ext/fragment/BookReviews'}">
+		<Button id="idReadReviews" text="Read Reviews" press="handler.readReviews" />
+		<List
+			id="reviewsList"
+			headerText="Reviews"
+			items="{
+				path: 'json>/reviews'
+			}">
+			<items>
+				<StandardListItem id="idSLI" title="{json>review}" />
+			</items>
+		</List>
+		<TextArea id="reviewBoox" placeholder="Write Review" width="100%"></TextArea>
+		<Toolbar id="reviewsToolbar">
+			<ToolbarSpacer id="idToolbarSpacer"></ToolbarSpacer>
+			<Button press="handler.postReview" id="postReivew" text="Post"></Button>
+		</Toolbar>
+		
+	</VBox>
+</core:FragmentDefinition>

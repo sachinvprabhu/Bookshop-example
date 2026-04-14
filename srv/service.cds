@@ -16,10 +16,16 @@ service bookshopService
     entity Books as projection on my.Books actions{
         function getStock() returns Integer;
         action addStock(quantity : Integer) returns Books;
+        function getReviews() returns many Review;
+        action writeReview(review : String) returns Review;
     };
     entity Authors as projection on my.Authors;
 }
 
+type Review {
+    bookId : String;
+    review : String;
+}
 
 annotate bookshopService.Books with @(
     odata.draft.enabled : true,

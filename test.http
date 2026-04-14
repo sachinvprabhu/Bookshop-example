@@ -38,3 +38,38 @@ Content-Type: application/json
 ###
 GET http://localhost:4004/service/bookshopService/Books
 Authorization: Basic employee@company.com:strong-password
+
+
+###
+GET http://localhost:8887/reload
+
+###
+GET http://json-database.dest/booksReviews
+
+### Read review for specific book
+GET http://json-database.dest/booksReviews?bookId:eq=b9405714-4184-4090-b8b8-1e4a267c8249
+
+###
+POST http://json-database.dest/booksReviews
+Content-Type: application/json
+
+{
+    "bookId":"b9405714-4184-4090-b8b8-1e4a267c8249",
+    "review":"Really Good Book!"
+}
+
+
+
+### Get Reviews Function
+GET http://localhost:4004/service/bookshopService/Books(ID='b9405714-4184-4090-b8b8-1e4a267c8249',IsActiveEntity=true)/getReviews
+Authorization: Basic manager@company.com:strong-password
+
+
+### Write Review
+POST http://localhost:4004/service/bookshopService/Books(ID='b9405714-4184-4090-b8b8-1e4a267c8249',IsActiveEntity=true)/writeReview
+Authorization: Basic manager@company.com:strong-password
+Content-Type: application/json
+
+{
+    "review" : "Good Book Review"
+}

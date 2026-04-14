@@ -1,7 +1,25 @@
 const cds = require("@sap/cds");
 const { SELECT } = require("@sap/cds/lib/ql/cds-ql");
+const axios = require("axios")
 module.exports = async function(){
     const northwind = await cds.connect.to('northwind');
+
+    this.on("getReviews","Books",function(req){
+        return axios.get(`http://json-database.dest/booksReviews?bookId:eq=${req.params[0].ID}`)
+            .then(response=>{
+                return response.data;
+            });
+    });
+    this.on("writeReview","Books",function(req){
+        let bookReview = {
+            bookId : req.params[0].ID,
+            review : req.data.review
+        };
+        return axios.post(`http://json-database.dest/booksReviews`, bookReview)
+            .then(response=>{
+                return response.data;
+            });
+    });
 
     this.on('READ', 'Customers', req => {
         return Promise.all([northwind.run(SELECT.from("Customers")),SELECT.from("bookshop.CityGeoCodes")])
