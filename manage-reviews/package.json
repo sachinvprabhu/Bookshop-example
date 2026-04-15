@@ -1,0 +1,14 @@
+{
+  "name": "manage-reviews",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start" : "node node_modules/@sap/approuter/approuter"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@sap/approuter": "^21.3.0"
+  }
+}

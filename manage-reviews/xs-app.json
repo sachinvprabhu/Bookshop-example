@@ -1,0 +1,24 @@
+{
+    "welcomeFile": "/index.html",
+    "authenticationMethod": "route",
+    "routes": [
+        {
+            "source": "^/?service/(.*)$",
+            "target": "/service/$1",
+            "destination": "srv-api",
+            "authenticationType": "none"
+        },
+        {
+            "source": "^/?booksReviews(.*)$",
+            "target": "/booksReviews$1",
+            "destination": "json-database",
+            "authenticationType": "none"
+        },
+        {
+            "source": "^/(.*)$",
+            "target": "$1",
+            "authenticationType": "none",
+            "localDir": "webapp"
+        }
+    ]
+}

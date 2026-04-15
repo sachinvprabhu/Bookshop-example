@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bookshop Reviews</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="lib/w3.css" />
+    <link rel="stylesheet" href="lib/w3-theme-dark.css" />
+    <link rel="stylesheet" href="lib/font-awesome.min.css" />
+    <link rel="stylesheet" href="index.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playpen+Sans+Thai:wght@100..800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="w3-card-4">
+        <div class="w3-container w3-theme w3-card w3-padding">
+          <span class="playpen-sans-thai-font w3-xlarge">Bookshop Reviews</span>
+        </div>
+        <div id="toast" class="toast"></div>
+        <div class="page">
+          <component :is="activePage"></component>
+        </div>
+      </div>
+    </div>
+    <script src="lib/vue.global.js"></script>
+    <script src="lib/httpVueLoader.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
