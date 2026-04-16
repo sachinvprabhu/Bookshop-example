@@ -6,6 +6,8 @@ modules:
   - name: bookshop-srv
     type: nodejs
     path: gen/srv
+    properties:
+      SEND_XFRAMEOPTIONS : false
     requires:
       - name: bookshop-auth
       - name: bookshop-db
