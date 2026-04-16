@@ -59,7 +59,6 @@ Content-Type: application/json
 }
 
 
-
 ### Get Reviews Function
 GET http://localhost:4004/service/bookshopService/Books(ID='b9405714-4184-4090-b8b8-1e4a267c8249',IsActiveEntity=true)/getReviews
 Authorization: Basic manager@company.com:strong-password

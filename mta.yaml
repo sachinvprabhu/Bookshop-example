@@ -3,6 +3,21 @@ ID: bookshop
 description: A simple CAP project.
 version: 1.0.0
 modules:
+  - name: bookshop-reviews
+    type: nodejs
+    path: manage-reviews
+    properties:
+      SEND_XFRAMEOPTIONS : false
+    parameters:
+      buildpack: nodejs_buildpack
+      memory: 256M
+    requires:
+      - name: bookshop-auth
+      - name: bookshop-connectivity
+      - name: bookshop-destination
+      - name: bookshop-logging
+
+
   - name: bookshop-srv
     type: nodejs
     path: gen/srv

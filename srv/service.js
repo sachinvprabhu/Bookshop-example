@@ -3,22 +3,17 @@ const { SELECT } = require("@sap/cds/lib/ql/cds-ql");
 const axios = require("axios")
 module.exports = async function(){
     const northwind = await cds.connect.to('northwind');
+    const jsonDatabase = await cds.connect.to('json-database');
 
-    this.on("getReviews","Books",function(req){
-        return axios.get(`http://json-database.dest/booksReviews?bookId:eq=${req.params[0].ID}`)
-            .then(response=>{
-                return response.data;
-            });
+    this.on("getReviews","Books",async function(req){
+        return jsonDatabase.send('GET', `/booksReviews?bookId:eq=${req.params[0].ID}`);
     });
     this.on("writeReview","Books",function(req){
         let bookReview = {
             bookId : req.params[0].ID,
             review : req.data.review
         };
-        return axios.post(`http://json-database.dest/booksReviews`, bookReview)
-            .then(response=>{
-                return response.data;
-            });
+        return jsonDatabase.send('POST',`/booksReviews`, bookReview);
     });
 
     this.on('READ', 'Customers', req => {

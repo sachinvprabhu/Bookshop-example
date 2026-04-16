@@ -11,6 +11,8 @@ sap.ui.define([
 
     return Controller.extend("bookshop.customersgeo.controller.RootView", {
         onInit: function() {
+            Messaging.registerObject(this.getView(), true);
+
 			const oProvider = this.byId("mapProvider");
 			const osm = sap.ui.require.toUrl("bookshop/customersgeo/model/map-style.json");
 			setTimeout(() => {
