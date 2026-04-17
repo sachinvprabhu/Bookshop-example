@@ -64,6 +64,9 @@
         "sap.ui.core": {}
       }
     },
+    "resourceRoots": {
+      "sap.ui.geomap": "./resources/sap/ui/geomap"
+    },
     "contentDensities": {
       "compact": true,
       "cozy": true
